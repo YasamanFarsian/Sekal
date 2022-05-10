@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecting Seats</title>
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&family=Signika+Negative:wght@700&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            fetch("http://localhost:8081/api/get-reserved-seats", {
+                    method: 'GET',
+                    headers: myHeaders
+                }).then(response => response.json())
+                .then(result => {
+                    $.each(result, function(index, value) {
+                        seat_number = value.seat_number;
+                        $(`input[name='seats[]'][value='${seat_number}']`).attr('disabled', 'disabled');
+                    });
+                }).catch(error => console.log('error', error));
+
+
+
+
+            $("#submit").click(function(e) {
+                e.preventDefault();
+                var bookingList = [];
+
+                $('input:checked').each(function() {
+                    bookingList.push({
+                        'seat_number': $(this).val(),
+                        'reservation_date': "2022-05-10"
+                    });
+                });
+
+                console.log(bookingList)
+                fetch("http://localhost:8081/api/book-reserved-seats", {
+                        method: 'POST',
+                        headers: myHeaders,
+                        body: JSON.stringify(bookingList),
+                        redirect: 'follow'
+                    }).then(response => response.text())
+                    .then(result => { console.log(result); location.reload();})
+                    .catch(error => console.log('error', error));
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <h1 class="main-title text-center">Assigning Seats To Passengers In An Aircraft</h1>
+        <div class="seat-categories col-lg-12">
+
+
+            <ul class="d-flex flex-row flex-wrap col-lg-12">
+                <li>
+
+                    <label>Main Cabin Extra</label>
+                </li>
+                <li>
+
+
+                    <label>Prefered</label>
+                </li>
+                <li>
+
+                    <label>Available</label>
+                </li>
+                <li>
+
+
+                    <label>Unavailable</label>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="container">
+            <div class="col-md-12 d-flex flex-row-reverse flex-wrap">
+                <div class="col-md-6 submitted-reservation">
+                    <div class="date-section text-center">
+                        <label for="selectdate">Date Selection :</label>
+                        <!-- <input type="date" name="dateofbirth" id="selectdate"> -->
+                        <!-- <input type="text" data-date="" data-date-format="YYYY-MM-DD" value="2015-08-09" id="selectdate"> -->
+                    </div>
+                    <div class="info-container col-lg-12">
+
+                        <p class="message-seat"></p>
+
+                    </div>
+                    <button class="col-lg-4" id="submit">Book Your Seat</button>
+
+                </div>
+                <div class="plane col-md-6">
+                    <ol class="cabin fuselage p-0">
+                        <li class="row row--1">
+                            <ol class="seats" type="A">
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="1A" value="1A" />
+                                    <label for="1A">1A</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="1B" value="1B" />
+                                    <label for="1B">1B</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="1C" value="1C" />
+                                    <label for="1C">1C</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="1D" value="1D" />
+                                    <label for="1D">1D</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="1E" value="1E" />
+                                    <label for="1E">1E</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="1F" value="1F" />
+                                    <label for="1F">1F</label>
+                                </li>
+                            </ol>
+                        </li>
+
+                        <li class="row row--3">
+                            <ol class="seats" type="A">
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="3A" value="3A" />
+                                    <label for="3A">3A</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="3B" value="3B" />
+                                    <label for="3B">3B</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="3C" value="3C" />
+                                    <label for="3C">3C</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="3D" value="3D" />
+                                    <label for="3D">3D</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="3E" value="3E" />
+                                    <label for="3E">3E</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="3F" value="3F" />
+                                    <label for="3F">3F</label>
+                                </li>
+                            </ol>
+                        </li>
+                        <li class="row row--4">
+                            <ol class="seats" type="A">
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="4A" value="4A" />
+                                    <label for="4A">4A</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="4B" value="4B" />
+                                    <label for="4B">4B</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="4C" value="4C" />
+                                    <label for="4C">4C</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="4D" value="4D" />
+                                    <label for="4D">4D</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="4E" value="4E" />
+                                    <label for="4E">4E</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="4F" value="4F" />
+                                    <label for="4F">4F</label>
+                                </li>
+                            </ol>
+                        </li>
+                        <li class="row row--5">
+                            <ol class="seats" type="A">
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="5A" value="5A" />
+                                    <label for="5A">5A</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="5B" value="5B" />
+                                    <label for="5B">5B</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="5C" value="5C" />
+                                    <label for="5C">5C</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="5D" value="5D" />
+                                    <label for="5D">5D</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="5E" value="5E" />
+                                    <label for="5E">5E</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="5F" value="5F" />
+                                    <label for="5F">5F</label>
+                                </li>
+                            </ol>
+                        </li>
+                        <li class="row row--6">
+                            <ol class="seats" type="A">
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="6A" value="6A" />
+                                    <label for="6A">6A</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="6B" value="6B" />
+                                    <label for="6B">6B</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="6C" value="6C" />
+                                    <label for="6C">6C</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="6D" value="6D" />
+                                    <label for="6D">6D</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="6E" value="6E" />
+                                    <label for="6E">6E</label>
+                                </li>
+                                <li class="seat">
+                                    <input type="checkbox" name="seats[]" id="6F" value="6F" />
+                                    <label for="6F">6F</label>
+                                </li>
+                            </ol>
+                        </li>
+
+                    </ol>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
+
+
+
+</body>
+
+</html>
